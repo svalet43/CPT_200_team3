@@ -29,10 +29,24 @@ public class HomeFragment extends Fragment {
 
         //text view objects
         final TextView tvWelcome = binding.tvWelcome, tvIntakeTitle = binding.tvIntakeTitle,
-                tvCalorieCount = binding.tvCalorieCount, tvCalories = binding.tvCalories,
+                tvCalorieCount = binding.tvCalorieCount, tvCalorieHeader = binding.tvCalorieHeader,
                 tvGoalHeader = binding.tvGoalHeader, tvGoalProgress = binding.tvGoalProgress;
 
-        homeViewModel.getText().observe(getViewLifecycleOwner(), tvWelcome::setText);
+        //set text size
+        tvWelcome.setTextSize(30);
+        tvIntakeTitle.setTextSize(30);
+        tvCalorieCount.setTextSize(30);
+        tvCalorieHeader.setTextSize(30);
+        tvGoalHeader.setTextSize(30);
+        tvGoalProgress.setTextSize(30);
+        //set text to textviews
+        homeViewModel.getTextWelcome().observe(getViewLifecycleOwner(), tvWelcome::setText);
+        homeViewModel.getTextIntake().observe(getViewLifecycleOwner(), tvIntakeTitle::setText);
+        homeViewModel.getTextCalorieHeader().observe(getViewLifecycleOwner(), tvCalorieHeader::setText);
+        homeViewModel.getTextCalorieCount().observe(getViewLifecycleOwner(), tvCalorieCount::setText);
+        homeViewModel.getTextGoalHeader().observe(getViewLifecycleOwner(), tvGoalHeader::setText);
+        homeViewModel.getTextGoalProgress().observe(getViewLifecycleOwner(), tvGoalProgress::setText);
+
 
         return root;
     }
