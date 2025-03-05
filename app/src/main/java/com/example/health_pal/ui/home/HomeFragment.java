@@ -18,14 +18,22 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        //view model object
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
+        //inflate binding and get root
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        //text view objects
+        final TextView tvWelcome = binding.tvWelcome, tvIntakeTitle = binding.tvIntakeTitle,
+                tvCalorieCount = binding.tvCalorieCount, tvCalories = binding.tvCalories,
+                tvGoalHeader = binding.tvGoalHeader, tvGoalProgress = binding.tvGoalProgress;
+
+        homeViewModel.getText().observe(getViewLifecycleOwner(), tvWelcome::setText);
+
         return root;
     }
 
