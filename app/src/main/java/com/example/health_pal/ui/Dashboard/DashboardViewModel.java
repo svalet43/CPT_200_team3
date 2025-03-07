@@ -1,14 +1,14 @@
-package com.example.health_pal.ui.home;
+package com.example.health_pal.ui.Dashboard;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class DashboardViewModel extends ViewModel {
 
     private final MutableLiveData<String> tvWelcome , tvIntakeTitle, tvCalorieCount, tvCalorieHeader, tvGoalHeader , tvGoalProgress;
 
-    public HomeViewModel() {
+    public DashboardViewModel() {
         tvWelcome = new MutableLiveData<>();
         tvIntakeTitle = new MutableLiveData<>();
         tvCalorieCount = new MutableLiveData<>();

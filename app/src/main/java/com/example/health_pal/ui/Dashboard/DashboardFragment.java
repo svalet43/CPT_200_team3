@@ -1,4 +1,4 @@
-package com.example.health_pal.ui.home;
+package com.example.health_pal.ui.Dashboard;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,21 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.health_pal.databinding.FragmentHomeBinding;
+import com.example.health_pal.databinding.FragmentDashBinding;
 
-public class HomeFragment extends Fragment {
+public class DashboardFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentDashBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         //view model object
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        DashboardViewModel dashboardViewModel =
+                new ViewModelProvider(this).get(DashboardViewModel.class);
 
         //inflate binding and get root
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentDashBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         //text view objects
@@ -39,13 +39,14 @@ public class HomeFragment extends Fragment {
         tvCalorieHeader.setTextSize(30);
         tvGoalHeader.setTextSize(30);
         tvGoalProgress.setTextSize(30);
+
         //set text to textviews
-        homeViewModel.getTextWelcome().observe(getViewLifecycleOwner(), tvWelcome::setText);
-        homeViewModel.getTextIntake().observe(getViewLifecycleOwner(), tvIntakeTitle::setText);
-        homeViewModel.getTextCalorieHeader().observe(getViewLifecycleOwner(), tvCalorieHeader::setText);
-        homeViewModel.getTextCalorieCount().observe(getViewLifecycleOwner(), tvCalorieCount::setText);
-        homeViewModel.getTextGoalHeader().observe(getViewLifecycleOwner(), tvGoalHeader::setText);
-        homeViewModel.getTextGoalProgress().observe(getViewLifecycleOwner(), tvGoalProgress::setText);
+        dashboardViewModel.getTextWelcome().observe(getViewLifecycleOwner(), tvWelcome::setText);
+        dashboardViewModel.getTextIntake().observe(getViewLifecycleOwner(), tvIntakeTitle::setText);
+        dashboardViewModel.getTextCalorieHeader().observe(getViewLifecycleOwner(), tvCalorieHeader::setText);
+        dashboardViewModel.getTextCalorieCount().observe(getViewLifecycleOwner(), tvCalorieCount::setText);
+        dashboardViewModel.getTextGoalHeader().observe(getViewLifecycleOwner(), tvGoalHeader::setText);
+        dashboardViewModel.getTextGoalProgress().observe(getViewLifecycleOwner(), tvGoalProgress::setText);
 
 
         return root;

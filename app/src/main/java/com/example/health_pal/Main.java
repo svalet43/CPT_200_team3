@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.health_pal.databinding.ActivityMainBinding;
 
-public class DashBoard extends AppCompatActivity {
+public class Main extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
