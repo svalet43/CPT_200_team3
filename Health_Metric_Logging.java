@@ -12,19 +12,27 @@ public class Health_Metric_Logging {
         public static void main(String[] args) {
           Scanner healthLogging = new Scanner(System.in);
       
-          System.out.println("Enter name of the food, cals/serving,and servings you ate:");
+          System.out.println("Enter your Weight(rounded and in lbs), "
+          + "Blood Pressure, Heart Rate, Breathing Rate, hours of sleep, "
+          + "and how many steps you have today:");
       
-          String food = healthLogging.nextLine();
-          int cps = healthLogging.nextInt(); // cps = Calories Per Serving
-          int servings = healthLogging.nextInt();
+          int weight = healthLogging.nextInt();
+          int bP = healthLogging.nextInt(); //bP = Blood Pressure
+          int bpm = healthLogging.nextInt(); // bpm = Beats Per Minute
+          int bR = healthLogging.nextInt(); //bR = Breathing Rate
+          int HOS = healthLogging.nextInt(); // HOS = Hours of sleep
+          int steps = healthLogging.nextInt();
 
       
           /*This section will be replaced with code to transport
             the data to the database when we have it completed
           */
-          System.out.println(food);
-          System.out.println(cps);
-          System.out.println(servings);
+          System.out.println(weight);
+          System.out.println(bP);
+          System.out.println(bpm);
+          System.out.println(bR);
+          System.out.println(HOS);
+          System.out.println(steps);
         }
     }
 }
