@@ -28,13 +28,14 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         //text view objects
-        final TextView tvWelcome = binding.tvWelcome, tvIntakeTitle = binding.tvIntakeTitle,
+        final TextView tvWelcome = binding.tvWelcome, tvWelcomeMessage = binding.tvWelcomeMessage,
                 tvCalorieCount = binding.tvCalorieCount, tvCalorieHeader = binding.tvCalorieHeader,
-                tvGoalHeader = binding.tvGoalHeader, tvGoalProgress = binding.tvGoalProgress;
+                tvGoalHeader = binding.tvGoalHeader, tvGoalProgress = binding.tvGoalProgress,
+                tvShowMore = binding.tvShowMoreStat;
 
         //set text size
         tvWelcome.setTextSize(30);
-        tvIntakeTitle.setTextSize(30);
+        tvWelcomeMessage.setTextSize(30);
         tvCalorieCount.setTextSize(30);
         tvCalorieHeader.setTextSize(30);
         tvGoalHeader.setTextSize(30);
@@ -42,7 +43,7 @@ public class DashboardFragment extends Fragment {
 
         //set text to textviews
         dashboardViewModel.getTextWelcome().observe(getViewLifecycleOwner(), tvWelcome::setText);
-        dashboardViewModel.getTextIntake().observe(getViewLifecycleOwner(), tvIntakeTitle::setText);
+        dashboardViewModel.getTextIntake().observe(getViewLifecycleOwner(), tvWelcomeMessage::setText);
         dashboardViewModel.getTextCalorieHeader().observe(getViewLifecycleOwner(), tvCalorieHeader::setText);
         dashboardViewModel.getTextCalorieCount().observe(getViewLifecycleOwner(), tvCalorieCount::setText);
         dashboardViewModel.getTextGoalHeader().observe(getViewLifecycleOwner(), tvGoalHeader::setText);

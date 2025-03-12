@@ -6,32 +6,37 @@ import androidx.lifecycle.ViewModel;
 
 public class DashboardViewModel extends ViewModel {
 
-    private final MutableLiveData<String> tvWelcome , tvIntakeTitle, tvCalorieCount, tvCalorieHeader, tvGoalHeader , tvGoalProgress;
+    private final MutableLiveData<String> tvWelcome ,tvWelcomeMessage , tvCalorieCount, tvCalorieHeader,
+            tvGoalHeader , tvGoalProgress, tvShowMore;
+    private String userName = "user", message = "Keep up the good work!";
+    private int calCount = 0;
 
     public DashboardViewModel() {
         tvWelcome = new MutableLiveData<>();
-        tvIntakeTitle = new MutableLiveData<>();
+        tvWelcomeMessage = new MutableLiveData<>();
         tvCalorieCount = new MutableLiveData<>();
         tvCalorieHeader = new MutableLiveData<>();
         tvGoalHeader = new MutableLiveData<>();
         tvGoalProgress = new MutableLiveData<>();
+        tvShowMore = new MutableLiveData<>();
 
-        //get values for text
+        //get values for text inputs
         //FIXME: need to use database to pull data too display
         //set text
-        tvWelcome.setValue("Hello userX");
-        tvIntakeTitle.setValue("Intake Metrics");
-        tvCalorieHeader.setValue("Total Calories Today");
-        tvCalorieCount.setValue("500");
-        tvGoalHeader.setValue("Goals");
+        tvWelcome.setValue("Hello " + userName);
+        tvWelcomeMessage.setValue(message);
+        tvCalorieHeader.setValue("Calories Today:");
+        tvCalorieCount.setValue(String.valueOf(calCount));
+        tvGoalHeader.setValue("Goals:");
         tvGoalProgress.setValue("");
+        tvShowMore.setValue("Show more");
     }
 
     public LiveData<String> getTextWelcome() {
         return tvWelcome;
     }
     public LiveData<String> getTextIntake() {
-        return tvIntakeTitle;
+        return tvWelcomeMessage;
     }
     public LiveData<String> getTextCalorieHeader() {
         return tvCalorieHeader;
@@ -45,4 +50,6 @@ public class DashboardViewModel extends ViewModel {
     public LiveData<String> getTextGoalProgress() {
         return tvGoalProgress;
     }
+
+    public LiveData<String> getTextShowMore(){ return tvShowMore; }
 }

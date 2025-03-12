@@ -41,14 +41,14 @@
         app:layout_constraintVertical_bias="0.895" />
 
     <TextView
-        android:id="@+id/tv_IntakeTitle"
+        android:id="@+id/tv_WelcomeMessage"
         android:layout_width="390dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="76dp"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="#232323"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +82,7 @@
         android:layout_marginTop="23dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="#232323FF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,8 +134,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.953"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_IntakeTitle"
-        app:layout_constraintVertical_bias="0.159" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.296" />
 
     <ImageView
         android:id="@+id/imageView2"
