@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,11 +28,10 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //text view objects
+        //view objects
         final TextView tvWelcome = binding.tvWelcome, tvWelcomeMessage = binding.tvWelcomeMessage,
                 tvCalorieCount = binding.tvCalorieCount, tvCalorieHeader = binding.tvCalorieHeader,
-                tvGoalHeader = binding.tvGoalHeader, tvGoalProgress = binding.tvGoalProgress,
-                tvShowMore = binding.tvShowMoreStat;
+                tvGoalHeader = binding.tvGoalHeader, tvGoalProgress = binding.tvGoalProgress;
 
         //set text size
         tvWelcome.setTextSize(30);
@@ -40,6 +40,7 @@ public class DashboardFragment extends Fragment {
         tvCalorieHeader.setTextSize(30);
         tvGoalHeader.setTextSize(30);
         tvGoalProgress.setTextSize(30);
+
 
         //set text to textviews
         dashboardViewModel.getTextWelcome().observe(getViewLifecycleOwner(), tvWelcome::setText);

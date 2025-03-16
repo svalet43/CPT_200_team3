@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class DashboardViewModel extends ViewModel {
 
     private final MutableLiveData<String> tvWelcome ,tvWelcomeMessage , tvCalorieCount, tvCalorieHeader,
-            tvGoalHeader , tvGoalProgress, tvShowMore;
+            tvGoalHeader , tvGoalProgress;
     private String userName = "user", message = "Keep up the good work!";
     private int calCount = 0;
 
@@ -18,7 +18,6 @@ public class DashboardViewModel extends ViewModel {
         tvCalorieHeader = new MutableLiveData<>();
         tvGoalHeader = new MutableLiveData<>();
         tvGoalProgress = new MutableLiveData<>();
-        tvShowMore = new MutableLiveData<>();
 
         //get values for text inputs
         //FIXME: need to use database to pull data too display
@@ -29,7 +28,6 @@ public class DashboardViewModel extends ViewModel {
         tvCalorieCount.setValue(String.valueOf(calCount));
         tvGoalHeader.setValue("Goals:");
         tvGoalProgress.setValue("");
-        tvShowMore.setValue("Show more");
     }
 
     public LiveData<String> getTextWelcome() {
@@ -50,6 +48,4 @@ public class DashboardViewModel extends ViewModel {
     public LiveData<String> getTextGoalProgress() {
         return tvGoalProgress;
     }
-
-    public LiveData<String> getTextShowMore(){ return tvShowMore; }
 }
