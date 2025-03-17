@@ -16,4 +16,11 @@
         android:name="com.example.health_pal.ui.calorie.CalorieFragment"
         android:label="@string/menu_calorie"
         tools:layout="@layout/fragment_calorie" />
+
+    <fragment
+        android:id="@+id/action_settings"
+        android:name="com.example.health_pal.ui.Settings.SettingsFragment"
+        android:label="@string/action_settings"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

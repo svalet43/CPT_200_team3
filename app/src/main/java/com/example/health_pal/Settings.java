@@ -1,0 +1,36 @@
+package com.example.health_pal;
+
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
+import android.widget.SearchView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+// Should receive search query, search your data, and display search results
+// TODO: Cleanup
+
+public class Settings extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_settings);
+
+        // enable back button in the action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Close the activity and return to the previous screen
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}

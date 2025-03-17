@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Health_Pal"
         tools:targetApi="31">
+        <activity android:name=".Settings">
+            <meta-data android:name="android.app.Settings"
+                android:resource="@xml/settings"/>
+        </activity>
         <activity
             android:name=".SearchableActivity"
             android:exported="true">
