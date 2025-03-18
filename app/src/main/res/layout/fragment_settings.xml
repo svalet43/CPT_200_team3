@@ -7,22 +7,26 @@
     tools:context=".ui.Settings.SettingsFragment">
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="127dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="588dp"
-        android:text="Settings"
+        android:id="@+id/tvSettingsTitle"
+        android:layout_width="123dp"
+        android:layout_height="39dp"
+        android:text="@string/tvSettingsTitle"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.019" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="540dp"
+        android:layout_width="86dp"
+        android:layout_height="33dp"
         android:text="Setting 1"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="177dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.099" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,8 +10,8 @@
     <string name="search_hint">Search</string>
 
     <string name="menu_dash">Dashboard</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
     <string name="menu_calorie">Calorie Tracker</string>
+
+    <string name="tvSettingsTitle">Settings</string>
     <string name="btShowMoreText">Show more</string>
 </resources>
