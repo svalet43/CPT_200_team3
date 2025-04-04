@@ -6,25 +6,51 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+import android.widget.Switch;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.example.health_pal.R;
+import android.util.Log;
 
-import com.example.health_pal.databinding.FragmentCalorieBinding;
+import android.widget.Toast; //debugging purposes
 
+import com.example.health_pal.databinding.FragmentSettingsBinding;
+// TODO: Dataflow Diagram - IB
+// TODO: Fix this mess, figure out making it actually work.
 public class SettingsFragment extends Fragment {
 
-    private FragmentCalorieBinding binding;
+    private FragmentSettingsBinding binding;
 
+    @Nullable
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         SettingsViewModel settingsViewModel =
                 new ViewModelProvider(this).get(SettingsViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        SwitchCompat dark_switch;
 
-        binding = FragmentCalorieBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        dark_switch = view.findViewById(R.id.switch1);
+        Toast.makeText(getContext(), "Fragment loaded", Toast.LENGTH_SHORT).show();
 
-        return root;
+        dark_switch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                Toast.makeText(getContext(), "TEST NX ON", Toast.LENGTH_SHORT).show();
+                Log.d("TEST", savedInstanceState.toString());
+            }
+            else {
+                Toast.makeText(getContext(), "TEST NX OFF", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        //View view = binding.getRoot();
+
+        return view;
     }
 
     @Override

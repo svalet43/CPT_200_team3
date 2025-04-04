@@ -11,6 +11,7 @@
 
     <string name="menu_dash">Dashboard</string>
     <string name="menu_calorie">Calorie Tracker</string>
+    <string name="menu_ai">AI Assistant</string>
 
     <string name="tvSettingsTitle">Settings</string>
 
