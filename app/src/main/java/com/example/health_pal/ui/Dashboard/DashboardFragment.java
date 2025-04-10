@@ -1,6 +1,7 @@
 package com.example.health_pal.ui.Dashboard;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,13 @@ import com.example.health_pal.databinding.FragmentDashBinding;
 public class DashboardFragment extends Fragment {
 
     private FragmentDashBinding binding;
+    private static final String TAG = "DashFragment";
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        Log.d(TAG, "onCreateView: DashboardFragment view creating.");
         //view model object
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
