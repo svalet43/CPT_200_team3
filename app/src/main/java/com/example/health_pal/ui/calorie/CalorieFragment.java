@@ -20,6 +20,9 @@ public class CalorieFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         CalorieViewModel calorieViewModel =
                 new ViewModelProvider(this).get(CalorieViewModel.class);
+        //get user search string
+        //find matching product names and display in list form
+        //if user clicks list entry show extended nutritional information and option for adding to todays nutrients
 
         binding = FragmentCalorieBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
