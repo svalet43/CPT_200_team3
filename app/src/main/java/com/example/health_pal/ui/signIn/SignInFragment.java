@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.example.health_pal.R;
 import com.example.health_pal.databinding.FragmentSigninBinding;
 import com.example.health_pal.ui.Dashboard.DashboardFragment;
@@ -26,7 +29,6 @@ public class SignInFragment extends Fragment {
     private FirebaseAuth mAuth;
     private boolean userAuth = true;
     private static final String TAG = "SignInFragment";
-    //EditText email, password, password2;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,15 +36,6 @@ public class SignInFragment extends Fragment {
         Log.d(TAG, "onCreateView: SignInFragment view creating.");
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
-        //edit text obj
-        //final EditText email = binding.ETEmail;
-        //String username = email.getText().toString();
-        // Create new fragment and transaction
-        //FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        //FragmentTransaction transaction = fragmentManager.beginTransaction();
-        //transaction.setReorderingAllowed(true);
-
 
         //view model object
         DashboardViewModel dashboardViewModel =
@@ -52,35 +45,44 @@ public class SignInFragment extends Fragment {
         binding = FragmentSigninBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //sign in
-        Button btSignIn = binding.btSignIn;
-        btSignIn.setOnClickListener(new View.OnClickListener() {
+        //edit text
+        final EditText email = binding.ETEmail, pass = binding.ETPassword, pass2 = binding.ETPassword2;
+
+        //buttons
+        Button btSignIn = binding.btSignIn, btCreateEmailAcc = binding.btCreateAcc, btCreateEmailAcc2 = binding.btCreateAcc2;
+
+        //set visibilities
+        pass2.setVisibility(View.GONE);
+        btCreateEmailAcc2.setVisibility(View.GONE);
+
+        //click listeners
+        btSignIn.setOnClickListener(new View.OnClickListener() { //sign in
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: SignIn button clicked.");
                 if(userAuth){
-                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-                    // Replace whatever is in the nav_host_fragment_content_main with the DashboardFragment
-                    transaction.replace(R.id.content_main, new DashboardFragment());
-                    Log.d(TAG, "onClick: Replace transaction initiated.");
-
-                    // Commit the transaction
-                    transaction.commit();
-                    Log.d(TAG, "onClick: Replace transaction committed.");
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+                    navController.navigate(R.id.action_nav_signIn_to_nav_dash);
                 }
                 else{}
 
             }
         });
-        //create email account
-        Button btCreateEmailAcc = binding.btCreateAcc;
-        btCreateEmailAcc.setOnClickListener(new View.OnClickListener() {
+        btCreateEmailAcc.setOnClickListener(new View.OnClickListener() { //create email account
             @Override
             public void onClick(View view) {
-                //open account creation fragment
-                //call creation method
+                //update layout objects
+                pass2.setVisibility(View.VISIBLE);
+                btCreateEmailAcc2.setVisibility(View.VISIBLE);
+
+                btSignIn.setVisibility(View.GONE);
+                btCreateEmailAcc.setVisibility(View.GONE);
+            }
+        });
+        btCreateEmailAcc2.setOnClickListener(new View.OnClickListener() { //secondary account creation
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

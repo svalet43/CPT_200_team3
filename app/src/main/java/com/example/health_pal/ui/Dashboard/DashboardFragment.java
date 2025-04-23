@@ -32,6 +32,8 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
+
         //view objects
         final TextView tvWelcome = binding.tvWelcome, tvWelcomeMessage = binding.tvWelcomeMessage,
                 tvCalorieCount = binding.tvCalorieCount, tvCalorieHeader = binding.tvCalorieHeader,
