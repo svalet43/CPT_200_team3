@@ -1,39 +1,42 @@
 package com.example.health_pal.ui.signIn;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.health_pal.R;
 import com.example.health_pal.databinding.FragmentSigninBinding;
-import com.example.health_pal.ui.Dashboard.DashboardFragment;
 import com.example.health_pal.ui.Dashboard.DashboardViewModel;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignInFragment extends Fragment {
 
     private FragmentSigninBinding binding;
     private FirebaseAuth mAuth;
+    private String email, password, password2,
+            passwordReq = "Password must be at least 8 characters long and contain the following: " +
+                    "\n- One digit (0-9)\n- One Special character(!@#$%^&*?_=+)\n- One lowercase letter (a-z)\n- One uppercase letter(A-Z)";
     private boolean userAuth = true;
     private static final String TAG = "SignInFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        Log.d(TAG, "onCreateView: SignInFragment view creating.");
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
@@ -46,20 +49,19 @@ public class SignInFragment extends Fragment {
         View root = binding.getRoot();
 
         //edit text
-        final EditText email = binding.ETEmail, pass = binding.ETPassword, pass2 = binding.ETPassword2;
+        final EditText ETemail = binding.ETEmail, ETpass = binding.ETPassword, ETpass2 = binding.ETPassword2;
 
         //buttons
         Button btSignIn = binding.btSignIn, btCreateEmailAcc = binding.btCreateAcc, btCreateEmailAcc2 = binding.btCreateAcc2;
 
         //set visibilities
-        pass2.setVisibility(View.GONE);
+        ETpass2.setVisibility(View.GONE);
         btCreateEmailAcc2.setVisibility(View.GONE);
 
         //click listeners
         btSignIn.setOnClickListener(new View.OnClickListener() { //sign in
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: SignIn button clicked.");
                 if(userAuth){
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
                     navController.navigate(R.id.action_nav_signIn_to_nav_dash);
@@ -72,7 +74,7 @@ public class SignInFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //update layout objects
-                pass2.setVisibility(View.VISIBLE);
+                ETpass2.setVisibility(View.VISIBLE);
                 btCreateEmailAcc2.setVisibility(View.VISIBLE);
 
                 btSignIn.setVisibility(View.GONE);
@@ -82,7 +84,33 @@ public class SignInFragment extends Fragment {
         btCreateEmailAcc2.setOnClickListener(new View.OnClickListener() { //secondary account creation
             @Override
             public void onClick(View view) {
+                //get inputs
+                email = ETemail.getText().toString();
+                password = ETpass.getText().toString();
+                password2 = ETpass2.getText().toString();
 
+                //validate email
+                if(!email.contains("@") || !email.contains(".")){
+                    Snackbar.make(view, "Invalid Email", Snackbar.LENGTH_LONG).show();
+                }
+                //password params
+                if(password.equals(password2)){ //passwords match
+                    if(Password_Validation(password)){
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+                        navController.navigate(R.id.action_nav_signIn_to_nav_dash);
+                    }
+                    else{
+                        //snack bar object
+                        Snackbar snackbar = Snackbar.make(view, passwordReq, Snackbar.LENGTH_LONG);
+                        //set snackbar height
+                        snackbar.setTextMaxLines(6);
+                        //show snackbar
+                        snackbar.show();
+                    }
+                }
+                else{
+                    Snackbar.make(view, "Passwords do not match.", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -95,13 +123,11 @@ public class SignInFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG, "onDestroyView: SignInFragment view destroyed.");
         binding = null;
     }
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: SignInFragment started.");
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
@@ -110,6 +136,26 @@ public class SignInFragment extends Fragment {
     }
 
     public void signIn(){
+
+    }
+    public static boolean Password_Validation(String password) { //returns true if password meets requirements
+        if(password.length()>=8){ // if length is at least 8
+            //contains one lowercase, one uppercase, and one special character
+            Pattern lower = Pattern.compile("[a-z]");
+            Pattern upper = Pattern.compile("[A-Z]");
+            Pattern digit = Pattern.compile("[0-9]");
+            Pattern special = Pattern.compile ("[!@#$%&*_+=?]");
+
+            Matcher hasLower = lower.matcher(password);
+            Matcher hasUpper = upper.matcher(password);
+            Matcher hasDigit = digit.matcher(password);
+            Matcher hasSpecial = special.matcher(password);
+
+            return hasLower.find() &&hasUpper.find() && hasDigit.find() && hasSpecial.find();
+
+        }
+        else
+            return false;
 
     }
 }

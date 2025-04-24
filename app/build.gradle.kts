@@ -38,14 +38,12 @@ android {
 
 dependencies {
 
-    implementation("androidx.credentials:credentials:1.5.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
+    
 
     implementation (platform("com.google.firebase:firebase-bom:33.12.0"))
+    implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-analytics")
-    implementation("androidx.credentials:credentials:1.3.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
 
 	implementation ("com.google.ai.client.generativeai:generativeai:0.1.2")
 
@@ -60,7 +58,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.firebase.auth)
     implementation(libs.common)
-    
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
