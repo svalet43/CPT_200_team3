@@ -1,7 +1,10 @@
 package com.example.health_pal.ui.signIn;
 
+import static com.example.health_pal.FirebaseUserUpdate.updateUser;
+
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +21,10 @@ import androidx.navigation.Navigation;
 import com.example.health_pal.R;
 import com.example.health_pal.databinding.FragmentSigninBinding;
 import com.example.health_pal.ui.Dashboard.DashboardViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,7 +32,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignInFragment extends Fragment {
-
     private FragmentSigninBinding binding;
     private FirebaseAuth mAuth;
     private String email, password, password2,
@@ -62,11 +67,27 @@ public class SignInFragment extends Fragment {
         btSignIn.setOnClickListener(new View.OnClickListener() { //sign in
             @Override
             public void onClick(View view) {
-                if(userAuth){
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-                    navController.navigate(R.id.action_nav_signIn_to_nav_dash);
-                }
-                else{}
+                email = ETemail.getText().toString();
+                password = ETpass.getText().toString();
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithEmail:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    updateUser(user);
+                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+                                    navController.navigate(R.id.action_nav_signIn_to_nav_dash);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show();
+                                    updateUser(null);
+                                }
+                            }
+                        });
 
             }
         });
@@ -93,23 +114,45 @@ public class SignInFragment extends Fragment {
                 if(!email.contains("@") || !email.contains(".")){
                     Snackbar.make(view, "Invalid Email", Snackbar.LENGTH_LONG).show();
                 }
-                //password params
-                if(password.equals(password2)){ //passwords match
-                    if(Password_Validation(password)){
-                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-                        navController.navigate(R.id.action_nav_signIn_to_nav_dash);
+                else{
+                    //password params
+                    if(password.equals(password2)){ //passwords match
+                        if(Password_Validation(password)){//valid password
+                            mAuth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                // Sign in success, update UI with the signed-in user's information
+                                                Log.d(TAG, "createUserWithEmail:success");
+                                                FirebaseUser user = mAuth.getCurrentUser();
+                                                updateUser(user);
+                                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+                                                navController.navigate(R.id.action_nav_signIn_to_nav_dash);
+                                            } else {
+                                                // If sign in fails, display a message to the user.
+                                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                                Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show();
+                                                updateUser(null);
+                                            }
+                                        }
+                                    });
+
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+                            navController.navigate(R.id.action_nav_signIn_to_nav_dash);
+                        }
+                        else{//invalid pasword
+                            //snack bar object
+                            Snackbar snackbar = Snackbar.make(view, passwordReq, Snackbar.LENGTH_LONG);
+                            //set snackbar height
+                            snackbar.setTextMaxLines(6);
+                            //show snackbar
+                            snackbar.show();
+                        }
                     }
                     else{
-                        //snack bar object
-                        Snackbar snackbar = Snackbar.make(view, passwordReq, Snackbar.LENGTH_LONG);
-                        //set snackbar height
-                        snackbar.setTextMaxLines(6);
-                        //show snackbar
-                        snackbar.show();
+                        Snackbar.make(view, "Passwords do not match.", Snackbar.LENGTH_LONG).show();
                     }
-                }
-                else{
-                    Snackbar.make(view, "Passwords do not match.", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -134,10 +177,6 @@ public class SignInFragment extends Fragment {
             currentUser.reload();
         }
     }
-
-    public void signIn(){
-
-    }
     public static boolean Password_Validation(String password) { //returns true if password meets requirements
         if(password.length()>=8){ // if length is at least 8
             //contains one lowercase, one uppercase, and one special character
@@ -157,5 +196,8 @@ public class SignInFragment extends Fragment {
         else
             return false;
 
+    }
+    public static void signOut(){
+        FirebaseAuth.getInstance().signOut();
     }
 }

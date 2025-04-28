@@ -7,9 +7,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.health_pal.ui.signIn.SignInFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 // Should receive search query, search your data, and display search results
 // TODO: Cleanup
@@ -23,6 +28,16 @@ public class Settings extends AppCompatActivity {
 
         // enable back button in the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //sign out button
+        Button btSignOut = findViewById(R.id.btSignOut);
+        btSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SignInFragment.signOut();
+                Snackbar.make(view, "Signed out", Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

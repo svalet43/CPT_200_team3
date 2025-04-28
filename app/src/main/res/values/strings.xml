@@ -20,6 +20,7 @@
     <string name="inPasswordHint2">Re-Enter Password</string>
 
     <string name="btSignIn">Sign In</string>
+    <string name="btSignOut">Sign Out</string>
     <string name="btCreateEmailAcc">Create Account</string>
     <string name="btShowMoreText">Show more</string>
 </resources>
