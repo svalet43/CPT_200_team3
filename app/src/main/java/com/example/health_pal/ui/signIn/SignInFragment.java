@@ -36,7 +36,8 @@ public class SignInFragment extends Fragment {
     private FirebaseAuth mAuth;
     private String email, password, password2,
             passwordReq = "Password must be at least 8 characters long and contain the following: " +
-                    "\n- One digit (0-9)\n- One Special character(!@#$%^&*?_=+)\n- One lowercase letter (a-z)\n- One uppercase letter(A-Z)";
+                    "\n- One digit (0-9)\n- One Special character(!@#$%^&*?_=+)\n- One lowercase letter " +
+                    "(a-z)\n- One uppercase letter(A-Z)";
     private boolean userAuth = true;
     private static final String TAG = "SignInFragment";
 
@@ -54,10 +55,12 @@ public class SignInFragment extends Fragment {
         View root = binding.getRoot();
 
         //edit text
-        final EditText ETemail = binding.ETEmail, ETpass = binding.ETPassword, ETpass2 = binding.ETPassword2;
+        final EditText ETemail = binding.ETEmail, ETpass = binding.ETPassword,
+                ETpass2 = binding.ETPassword2;
 
         //buttons
-        Button btSignIn = binding.btSignIn, btCreateEmailAcc = binding.btCreateAcc, btCreateEmailAcc2 = binding.btCreateAcc2;
+        Button btSignIn = binding.btSignIn, btCreateEmailAcc = binding.btCreateAcc,
+                btCreateEmailAcc2 = binding.btCreateAcc2;
 
         //set visibilities
         ETpass2.setVisibility(View.GONE);
@@ -137,9 +140,6 @@ public class SignInFragment extends Fragment {
                                             }
                                         }
                                     });
-
-                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-                            navController.navigate(R.id.action_nav_signIn_to_nav_dash);
                         }
                         else{//invalid pasword
                             //snack bar object

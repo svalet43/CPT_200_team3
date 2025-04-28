@@ -10,7 +10,11 @@
         android:id="@+id/nav_dash"
         android:name="com.example.health_pal.ui.Dashboard.DashboardFragment"
         android:label="@string/menu_dash"
-        tools:layout="@layout/fragment_dash" />
+        tools:layout="@layout/fragment_dash" >
+        <action
+            android:id="@+id/action_nav_dash_to_nav_signIn"
+            app:destination="@id/nav_signIn" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_calorie"
@@ -22,7 +26,11 @@
         android:id="@+id/action_settings"
         android:name="com.example.health_pal.ui.Settings.SettingsFragment"
         android:label="@string/action_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_action_settings_to_nav_signIn"
+            app:destination="@id/nav_signIn" />
+    </fragment>
 
     <fragment
         android:id="@id/nav_ai"

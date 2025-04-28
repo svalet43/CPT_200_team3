@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.health_pal.ui.signIn.SignInFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,6 +38,8 @@ public class Settings extends AppCompatActivity {
             public void onClick(View view) {
                 SignInFragment.signOut();
                 Snackbar.make(view, "Signed out", Snackbar.LENGTH_LONG).show();
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_action_settings_to_nav_signIn);
             }
         });
     }
