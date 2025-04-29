@@ -17,11 +17,13 @@ import androidx.navigation.Navigation;
 
 import com.example.health_pal.ui.signIn.SignInFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 // Should receive search query, search your data, and display search results
 // TODO: Cleanup
 
 public class Settings extends AppCompatActivity {
+    public static Boolean signedOut = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +38,10 @@ public class Settings extends AppCompatActivity {
         btSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SignInFragment.signOut();
                 Snackbar.make(view, "Signed out", Snackbar.LENGTH_LONG).show();
-                NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_action_settings_to_nav_signIn);
+                AuthManager.signOut();
+                signedOut = true;
+                finish();
             }
         });
     }

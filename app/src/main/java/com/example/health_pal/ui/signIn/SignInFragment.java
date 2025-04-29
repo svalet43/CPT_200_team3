@@ -1,6 +1,6 @@
 package com.example.health_pal.ui.signIn;
 
-import static com.example.health_pal.FirebaseUserUpdate.updateUser;
+import static com.example.health_pal.User.updateUser;
 
 import android.os.Bundle;
 
@@ -175,6 +175,8 @@ public class SignInFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             currentUser.reload();
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.action_nav_signIn_to_nav_dash);
         }
     }
     public static boolean Password_Validation(String password) { //returns true if password meets requirements

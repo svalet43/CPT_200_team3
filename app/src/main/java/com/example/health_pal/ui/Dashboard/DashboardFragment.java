@@ -5,14 +5,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.example.health_pal.AuthManager;
+import com.example.health_pal.R;
 import com.example.health_pal.databinding.FragmentDashBinding;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DashboardFragment extends Fragment {
 
@@ -22,8 +30,7 @@ public class DashboardFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        Log.d(TAG, "onCreateView: DashboardFragment view creating.");
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
         //view model object
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
@@ -59,7 +66,6 @@ public class DashboardFragment extends Fragment {
 
         return root;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -15,7 +15,7 @@
 
     <string name="tvSettingsTitle">Settings</string>
 
-    <string name="inUsernameHint">Username</string>
+    <string name="inUsernameHint">Email</string>
     <string name="inPasswordHint">Password</string>
     <string name="inPasswordHint2">Re-Enter Password</string>
 

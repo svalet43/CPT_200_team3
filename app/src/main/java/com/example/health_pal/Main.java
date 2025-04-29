@@ -10,6 +10,8 @@ import android.view.Menu;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,16 +26,30 @@ public class Main extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private static final String TAG = "MainFragment";
+    private NavController navController;
+    private AuthManager authManager;
+
+    // Activity Result Launcher for Settings
+    private final ActivityResultLauncher<Intent> settingsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        // Check if the user signed out
+                        if (authManager.isLoggedIn()) {
+                                navController.navigate(R.id.nav_signIn);
+                            }
+                    });
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: MainActivity created.");
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Initialize Auth Manager
+        authManager = new AuthManager();
 
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
@@ -44,9 +60,28 @@ public class Main extends AppCompatActivity {
                 R.id.nav_dash, R.id.nav_calorie, R.id.nav_ai,R.id.nav_signIn)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        //check if logged in
+        if(!authManager.isLoggedIn() && Settings.signedOut){
+            navController.navigate(R.id.nav_signIn);
+            // Set up button to go to settings
+            Intent intent = new Intent(this, Settings.class);
+            settingsLauncher.launch(intent);
+        }
+
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("MainActivity", "onResume called");
+        //Check if logged in
+        if (!authManager.isLoggedIn()) {
+            navController.navigate(R.id.nav_signIn);
+        }
     }
 
     // handle the options menu (3 dots) at top right of main pages
