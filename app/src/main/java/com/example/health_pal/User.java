@@ -1,22 +1,40 @@
 package com.example.health_pal;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class User {
+    /*this class is for creating a user object
+    * Variables:
+    * email = users email pulled from firebase
+    * username = generated from email*/
     //variables
-    private String ID, cal, protein, carb, fat, weight, date;
-    public String username;
-    public String email;
-    //constructors
+    private String email, username = "", ID = "";
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    //constructor
+    public User(FirebaseAuth m_Auth) {
+        if(AuthManager.isLoggedIn()) { //check
+            mAuth = m_Auth;
+            currentUser = mAuth.getCurrentUser();
+            email = currentUser.getEmail();
 
-    public User() {} //default
-
-    public User(String username, String email) {
-        this.username = username;
-        this.email = email;
+            if(email != null){
+                int amperIndex = 0;
+                for(int i=0; i<email.length();i++){
+                    if(email.charAt(i) == '@'){ amperIndex = i; }
+                }
+                username = email.substring(0, amperIndex);
+                ID = currentUser.getUid();
+            }
+        }
     }
+    //getters
+    public FirebaseUser getCurrentUser(){ return currentUser; }
+    public String getEmail(){ return email; }
+    public String getUsername(){ return username; }
+    public String getID(){ return ID;}
     //methods
-    public static void updateUser(FirebaseUser user){ //pulls user info from firebase and database
-
+    public static void updateUser(User user){ //updates user info in app
     }
 }

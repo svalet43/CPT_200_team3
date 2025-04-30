@@ -21,6 +21,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.health_pal.R;
+import com.example.health_pal.User;
 import com.example.health_pal.databinding.FragmentSigninBinding;
 import com.example.health_pal.ui.Dashboard.DashboardViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,13 +35,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignInFragment extends Fragment {
+    public static User user;
     private FragmentSigninBinding binding;
     private FirebaseAuth mAuth;
     private String email, password, password2,
             passwordReq = "Password must be at least 8 characters long and contain the following: " +
                     "\n- One digit (0-9)\n- One Special character(!@#$%^&*?_=+)\n- One lowercase letter " +
                     "(a-z)\n- One uppercase letter(A-Z)";
-    private boolean userAuth = true;
     private static final String TAG = "SignInFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -68,6 +69,9 @@ public class SignInFragment extends Fragment {
         ETpass2.setVisibility(View.GONE);
         btCreateEmailAcc2.setVisibility(View.GONE);
 
+        //nav controller
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+
         //click listeners
         btSignIn.setOnClickListener(new View.OnClickListener() { //sign in
             @Override
@@ -80,16 +84,13 @@ public class SignInFragment extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    user = new User(mAuth);
                                     updateUser(user);
-                                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+                                    // change fragment
                                     navController.navigate(R.id.action_nav_signIn_to_nav_dash);
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
                                     Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show();
-                                    updateUser(null);
                                 }
                             }
                         });
@@ -129,14 +130,12 @@ public class SignInFragment extends Fragment {
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
                                                 // Sign in success, update UI with the signed-in user's information
-                                                Log.d(TAG, "createUserWithEmail:success");
                                                 FirebaseUser user = mAuth.getCurrentUser();
-                                                updateUser(user);
-                                                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+
+                                                //change fragment
                                                 navController.navigate(R.id.action_nav_signIn_to_nav_dash);
                                             } else {
                                                 // If sign in fails, display a message to the user.
-                                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                                 Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show();
                                                 updateUser(null);
                                             }
