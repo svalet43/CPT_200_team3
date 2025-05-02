@@ -1,9 +1,18 @@
 package com.example.health_pal;
 
+import static java.lang.Double.parseDouble;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DayStats {
     /*this class creates a DayStats object and
@@ -12,7 +21,8 @@ public class DayStats {
     * tracks  cal, protein, carb, fat, weight, date*/
        private FirebaseFirestore db;
        private FirebaseUser user;
-       private String cal, protein, carb, fat, weight;
+       private int cal, protein, carb, fat;
+       private double weight;
        private Date date;
     //constructor
     public DayStats(FirebaseFirestore inputDB, Date inputDate, FirebaseUser inputUser){
@@ -23,11 +33,81 @@ public class DayStats {
     }
     private void DayStatsConstructorHelper(){
         //if date is not already in database then create new row, otherwise pull date data
+        db.collection("users")
+                .document(user.getUid()) // Use getUid() for user document
+                .collection("days")
+                .document(date.toString()) // Assuming date.toString() provides a unique document ID
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Data exists, pull it
+                                pullFromDatabase(document);
+                            }
+                            else {
+                                // Data doesn't exist for this date, initialize and push
+                                initializeNewDay();
+                                pushToDatabase();
+                            }
+                        }
+                        else {
+                            // Handle potential errors when fetching the document
+                            // You might want to log the error or handle it based on your app's needs
+                            // Log.e("DayStats", "Error getting day stats", task.getException());
+                            // Depending on the error, you might still want to initialize a new day
+                            initializeNewDay();
+                            pushToDatabase();
+                        }
+                    }
+                });
     }
     //methods
-    public void PushToDatabase(){
-        db.collection("users").document(user.toString()).collection("days").document(date.toString());
-    }
-    public void PullFromDatabase(){}
+    public void pushToDatabase(){
+        // Create a Map to hold the data
+        Map<String, Object> dayData = new HashMap<>();
+        dayData.put("cal", cal);
+        dayData.put("protein", protein);
+        dayData.put("carb", carb);
+        dayData.put("fat", fat);
+        dayData.put("weight", weight);
+        // You don't need to store the date field explicitly in the document
+        // if the document ID is the date string.
 
+        db.collection("users")
+                .document(user.getUid()) // Use getUid() for user document
+                .collection("days")
+                .document(date.toString()) // Assuming date.toString() provides a unique document ID
+                .set(dayData) // Use set() to create or overwrite the document
+                .addOnSuccessListener(aVoid -> {
+                    // Document successfully written
+                    // You might want to add a success log or callback
+                })
+                .addOnFailureListener(e -> {
+                    // Handle potential errors when writing the document
+                    // Log.w("DayStats", "Error writing document", e);
+                });
+    }
+    public void pullFromDatabase(DocumentSnapshot doc){
+        // Retrieve the data from the DocumentSnapshot
+        cal = Integer.parseInt(doc.getString("cal"));;
+        protein = Integer.parseInt(doc.getString("protein"));
+        carb = Integer.parseInt(doc.getString("carb"));
+        fat = Integer.parseInt(doc.getString("fat"));
+        weight = parseDouble(doc.getString("weight"));
+
+    }
+    public void updateStats(){
+
+    }
+    private void initializeNewDay() {
+        // Set initial values for a new day
+        cal = 0;
+        protein = 0;
+        carb = 0;
+        fat = 0;
+        weight = 0; // Or you might set an initial weight from user profile if available
+    }
 }
