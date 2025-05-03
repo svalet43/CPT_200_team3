@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,16 +30,6 @@ public class Main extends AppCompatActivity {
     private NavController navController;
     private AuthManager authManager;
 
-    // Activity Result Launcher for Settings
-    private final ActivityResultLauncher<Intent> settingsLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        // Check if the user signed out
-                        if (authManager.isLoggedIn()) {
-                                navController.navigate(R.id.nav_signIn);
-                            }
-                    });
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +39,9 @@ public class Main extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize Auth Manager
-        authManager = new AuthManager();
-
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
+
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -60,9 +49,23 @@ public class Main extends AppCompatActivity {
                 R.id.nav_dash, R.id.nav_calorie, R.id.nav_ai,R.id.nav_signIn)
                 .setOpenableLayout(drawer)
                 .build();
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment_content_main);
+        navController = navHostFragment.getNavController();
+        //navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        // Initialize Auth Manager
+        authManager = new AuthManager();
+
+        final ActivityResultLauncher<Intent> settingsLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                        result -> {
+                            // Check if the user signed out
+                            if (authManager.isLoggedIn()) {
+                                navController.navigate(R.id.nav_signIn);
+                            }
+                        });
 
         //check if logged in
         if(!authManager.isLoggedIn() && Settings.signedOut){

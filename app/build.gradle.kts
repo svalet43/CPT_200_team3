@@ -45,9 +45,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
 
-
 	implementation ("com.google.ai.client.generativeai:generativeai:0.1.2")
-
 
     implementation(libs.appcompat)
     implementation(libs.material)
