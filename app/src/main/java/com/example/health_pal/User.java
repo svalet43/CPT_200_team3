@@ -30,7 +30,6 @@ public class User {
         }
     }
     //getters
-    public FirebaseUser getCurrentUser(){ return currentUser; }
     public String getEmail(){ return email; }
     public String getUsername(){ return username; }
     public String getID(){ return ID;}

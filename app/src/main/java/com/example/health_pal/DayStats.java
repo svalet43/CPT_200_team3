@@ -99,6 +99,24 @@ public class DayStats {
         weight = parseDouble(doc.getString("weight"));
 
     }
+    public void addNutrient(String nutrient, int amount){
+        switch (nutrient){
+            case "carb":
+                carb += amount;
+                break;
+            case "protein":
+                protein += amount;
+                break;
+            case "fat":
+                fat += amount;
+                break;
+            case "cal":
+                cal += amount;
+                break;
+            default:
+                break;
+        }
+    }
     public void updateStats(){
 
     }
@@ -110,4 +128,11 @@ public class DayStats {
         fat = 0;
         weight = 0; // Or you might set an initial weight from user profile if available
     }
+    //getters
+    public int getCal(){ return cal; }
+    public int getProtein(){ return protein; }
+    public int getCarb(){ return carb; }
+    public int getFat(){ return fat; }
+    public double getWeight(){ return weight; }
+    public Date getDate(){ return date; }
 }
