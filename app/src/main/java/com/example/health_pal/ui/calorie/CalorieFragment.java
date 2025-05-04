@@ -9,7 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.example.health_pal.R;
 import com.example.health_pal.databinding.FragmentCalorieBinding;
 
 public class CalorieFragment extends Fragment {
@@ -20,12 +23,12 @@ public class CalorieFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         CalorieViewModel calorieViewModel =
                 new ViewModelProvider(this).get(CalorieViewModel.class);
-        //get user search string
-        //find matching product names and display in list form
-        //if user clicks list entry show extended nutritional information and option for adding to todays nutrients
 
         binding = FragmentCalorieBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+        navController.navigate(R.id.action_nav_calorie_to_nav_dash);
         
         return root;
     }

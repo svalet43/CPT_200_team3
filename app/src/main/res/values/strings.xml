@@ -15,12 +15,33 @@
 
     <string name="tvSettingsTitle">Settings</string>
 
+    <string name="tvLogIntroTitle">Information Log</string>
+
+    <string name="tvLogTitle">Enter Nutritional Information</string>
+    <string name="tvStatLogTitle">Enter Information</string>
+    <string name="tvCalTitle">Calories:</string>
+    <string name="tvCalHint">Calories</string>
+    <string name="tvProTitle">Protein(g):</string>
+    <string name="tvProHint">Protein</string>
+    <string name="tvFatTitle">Fat(g):</string>
+    <string name="tvFatHint">Fat</string>
+    <string name="tvCarbTitle">Carbs(g):</string>
+    <string name="tvCarbHint">Carbs</string>
+    <string name="tvHeightTitle">Height(ft, in):</string>
+    <string name="tvHeightFtHint">ft</string>
+    <string name="tvHeightInHint">in</string>
+    <string name="tvWeightTitle">Weight(lbs):</string>
+    <string name="tvWeightHint">Weight</string>
+
     <string name="inUsernameHint">Email</string>
     <string name="inPasswordHint">Password</string>
     <string name="inPasswordHint2">Re-Enter Password</string>
 
     <string name="btSignIn">Sign In</string>
     <string name="btSignOut">Sign Out</string>
+    <string name="btSubmit">Submit</string>
+    <string name="btStats">Height/Weight</string>
+    <string name="btNutrition">Nutrition</string>
     <string name="btCreateEmailAcc">Create Account</string>
     <string name="btShowMoreText">Show more</string>
 </resources>

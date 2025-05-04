@@ -15,7 +15,7 @@ public class SearchableActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_calorie);
+        //setContentView(R.layout.fragment_calorie);
     }
 
     @Override

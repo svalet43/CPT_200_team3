@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +19,12 @@ public class DayStats {
     /*this class creates a DayStats object and
     *pushes/pulls data from firebase
     *stores each day as an object with that day's nutrients
-    * tracks  cal, protein, carb, fat, weight, date*/
+    * tracks  cal, protein, carb, fat, height, weight, date*/
        private FirebaseFirestore db;
        private FirebaseUser user;
        private int cal, protein, carb, fat;
        private double weight;
+       private String height;
        private Date date;
     //constructor
     public DayStats(FirebaseFirestore inputDB, Date inputDate, FirebaseUser inputUser){
@@ -72,6 +74,7 @@ public class DayStats {
         dayData.put("protein", protein);
         dayData.put("carb", carb);
         dayData.put("fat", fat);
+        dayData.put("height", height);
         dayData.put("weight", weight);
         // You don't need to store the date field explicitly in the document
         // if the document ID is the date string.
@@ -103,15 +106,19 @@ public class DayStats {
         switch (nutrient){
             case "carb":
                 carb += amount;
+                pushToDatabase();
                 break;
             case "protein":
                 protein += amount;
+                pushToDatabase();
                 break;
             case "fat":
                 fat += amount;
+                pushToDatabase();
                 break;
             case "cal":
                 cal += amount;
+                pushToDatabase();
                 break;
             default:
                 break;
@@ -126,7 +133,21 @@ public class DayStats {
         protein = 0;
         carb = 0;
         fat = 0;
-        weight = 0; // Or you might set an initial weight from user profile if available
+        //look for height and weight in user profile
+        DayStats prevDay = getPreviousDay();
+        height = prevDay.getHeight();
+        weight = prevDay.getWeight();
+    }
+    public DayStats getPreviousDay() {
+        //get previous day
+        Date prevDate;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_WEEK, -1);
+        prevDate = calendar.getTime();
+
+        DayStats returnDay = new DayStats(db, prevDate, user);
+        return returnDay;
     }
     //getters
     public int getCal(){ return cal; }
@@ -134,5 +155,6 @@ public class DayStats {
     public int getCarb(){ return carb; }
     public int getFat(){ return fat; }
     public double getWeight(){ return weight; }
+    public String getHeight(){ return height; }
     public Date getDate(){ return date; }
 }

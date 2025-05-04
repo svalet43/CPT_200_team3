@@ -20,7 +20,7 @@
         android:id="@+id/nav_calorie"
         android:name="com.example.health_pal.ui.calorie.CalorieFragment"
         android:label="@string/menu_calorie"
-        tools:layout="@layout/fragment_calorie" />
+        tools:layout="@layout/frag_log_intro" />
 
     <fragment
         android:id="@+id/action_settings"
