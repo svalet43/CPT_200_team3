@@ -13,22 +13,23 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.health_pal.R;
+import com.example.health_pal.databinding.FragLogIntroBinding;
 import com.example.health_pal.databinding.FragmentCalorieBinding;
 
 public class CalorieFragment extends Fragment {
 
-    private FragmentCalorieBinding binding;
+    private FragLogIntroBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         CalorieViewModel calorieViewModel =
                 new ViewModelProvider(this).get(CalorieViewModel.class);
 
-        binding = FragmentCalorieBinding.inflate(inflater, container, false);
+        binding = FragLogIntroBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-        navController.navigate(R.id.action_nav_calorie_to_nav_dash);
+        //navController.navigate(R.id.action_nav_calorie_to_nav_dash);
         
         return root;
     }
