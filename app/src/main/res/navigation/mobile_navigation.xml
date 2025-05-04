@@ -20,7 +20,14 @@
         android:id="@+id/nav_calorie"
         android:name="com.example.health_pal.ui.calorie.CalorieFragment"
         android:label="@string/menu_calorie"
-        tools:layout="@layout/frag_log_intro" />
+        tools:layout="@layout/frag_log_intro" >
+        <action
+            android:id="@+id/action_nav_calorie_to_nav_food_log"
+            app:destination="@id/nav_food_log" />
+        <action
+            android:id="@+id/action_nav_calorie_to_nav_stat_log"
+            app:destination="@id/nav_stat_log" />
+    </fragment>
 
     <fragment
         android:id="@+id/action_settings"
@@ -46,5 +53,23 @@
         <action
             android:id="@+id/action_nav_signIn_to_nav_dash"
             app:destination="@id/nav_dash" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_food_log"
+        android:name="com.example.health_pal.ui.calorie.FoodLogFragment"
+        tools:layout="@layout/frag_nutrilog"
+        >
+        <action
+            android:id="@+id/action_nav_food_log_to_nav_signIn"
+            app:destination="@id/nav_signIn" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_stat_log"
+        android:name="com.example.health_pal.ui.calorie.StatLogFragment"
+        tools:layout="@layout/frag_stat_log"
+        >
+        <action
+            android:id="@+id/action_nav_stat_log_to_nav_signIn"
+            app:destination="@id/nav_signIn" />
     </fragment>
 </navigation>
