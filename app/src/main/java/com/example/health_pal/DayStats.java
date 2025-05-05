@@ -40,7 +40,7 @@ public class DayStats {
         db.collection("users")
                 .document(user.getUid()) // Use getUid() for user document
                 .collection("days")
-                .document(date.getDate()) // Assuming date.toString() provides a unique document ID
+                .document(date.getDate())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -48,20 +48,14 @@ public class DayStats {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                // Data exists, pull it
                                 pullFromDatabase(document);
                             }
                             else {
-                                // Data doesn't exist for this date, initialize and push
                                 initializeNewDay();
                                 pushToDatabase();
                             }
                         }
                         else {
-                            // Handle potential errors when fetching the document
-                            // You might want to log the error or handle it based on your app's needs
-                            // Log.e("DayStats", "Error getting day stats", task.getException());
-                            // Depending on the error, you might still want to initialize a new day
                             initializeNewDay();
                             pushToDatabase();
                         }
