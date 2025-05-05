@@ -1,0 +1,7 @@
+dashSS.png: This is the dashboard fragment where the current day's information is shown. It greets the user and displays a encouragement message.
+geminiSS.png: This is the Gemini assistant fragment, it takes user input and feeds it to Gemini, after a short wait it displays the Gemini response to the user's input.
+LogIntroSS.png: This is the welcome screen for the information log. The user will select what information they are inputting. After selection the user is guided to the corresponding log page.
+NavSS.ong: This is a screenshot of the navigation drawer. The drawer opens when the hamburger menu is clicked. Each option in the drawer displays the corresponding fragment.
+NutriLogSS.png: This is the fragment where users will log nutrients, the nutrients are put into the database for later use.
+SettingsSS.png: this is the settings page. It is mainly used for user sign out at this time.
+StatLogSS.png: This is where the user enters their height and weight. Once entered they are stored in the database for later use.
