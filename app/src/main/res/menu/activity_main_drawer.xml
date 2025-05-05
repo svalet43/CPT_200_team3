@@ -16,7 +16,7 @@
         <!--TODO: Give AI Assist a unique icon, probably the 4 star thing every AI assistant uses-->
         <item
             android:id="@+id/nav_ai"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_assistant"
             android:title="@string/menu_ai"
             />
     </group>

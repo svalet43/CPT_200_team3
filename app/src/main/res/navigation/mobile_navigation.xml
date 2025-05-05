@@ -60,8 +60,8 @@
         tools:layout="@layout/frag_nutrilog"
         >
         <action
-            android:id="@+id/action_nav_food_log_to_nav_signIn"
-            app:destination="@id/nav_signIn" />
+            android:id="@+id/action_nav_food_log_to_nav_dash"
+            app:destination="@id/nav_dash" />
     </fragment>
     <fragment
         android:id="@+id/nav_stat_log"
@@ -69,7 +69,7 @@
         tools:layout="@layout/frag_stat_log"
         >
         <action
-            android:id="@+id/action_nav_stat_log_to_nav_signIn"
-            app:destination="@id/nav_signIn" />
+            android:id="@+id/action_nav_stat_log_to_nav_dash"
+            app:destination="@id/nav_dash" />
     </fragment>
 </navigation>
