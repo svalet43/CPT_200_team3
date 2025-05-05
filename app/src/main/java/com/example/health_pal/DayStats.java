@@ -95,11 +95,20 @@ public class DayStats {
     }
     public void pullFromDatabase(DocumentSnapshot doc){
         // Retrieve the data from the DocumentSnapshot
-        cal = Integer.parseInt(doc.getString("cal"));;
-        protein = Integer.parseInt(doc.getString("protein"));
-        carb = Integer.parseInt(doc.getString("carb"));
-        fat = Integer.parseInt(doc.getString("fat"));
-        weight = parseDouble(doc.getString("weight"));
+        cal = doc.getLong("cal").intValue();
+        protein = doc.getLong("protein").intValue();
+        carb = doc.getLong("carb").intValue();
+        fat = doc.getLong("fat").intValue();
+        try{
+        weight = doc.getDouble("weight");}
+        catch(Exception e){
+            weight = 0;
+        }
+        try{
+        height = doc.getString("height");}
+        catch(Exception e){
+            height = null;
+        }
 
     }
     public void addNutrient(String nutrient, int amount){
