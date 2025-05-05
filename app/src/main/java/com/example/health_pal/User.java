@@ -32,8 +32,5 @@ public class User {
     //getters
     public String getEmail(){ return email; }
     public String getUsername(){ return username; }
-    public String getID(){ return ID;}
     //methods
-    public static void updateUser(User user){ //updates user info in app
-    }
 }

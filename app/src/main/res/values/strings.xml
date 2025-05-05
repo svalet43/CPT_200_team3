@@ -33,6 +33,12 @@
     <string name="tvWeightTitle">Weight(lbs):</string>
     <string name="tvWeightHint">Weight</string>
 
+    <string name="tvNutriToday">Nutrients Today:</string>
+    <string name="tvCalToday">Calories:</string>
+    <string name="tvProToday">Protein:</string>
+    <string name="tvFatToday">Fat:</string>
+    <string name="tvCarbToday">Carbs:</string>
+
     <string name="inUsernameHint">Email</string>
     <string name="inPasswordHint">Password</string>
     <string name="inPasswordHint2">Re-Enter Password</string>

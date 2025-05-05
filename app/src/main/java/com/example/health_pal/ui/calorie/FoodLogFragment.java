@@ -12,13 +12,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.health_pal.DayStats;
 import com.example.health_pal.R;
+import com.example.health_pal.User;
 import com.example.health_pal.databinding.FragLogIntroBinding;
 import com.example.health_pal.databinding.FragNutrilogBinding;
+import com.example.health_pal.sDate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
 
 public class FoodLogFragment extends Fragment {
     private FragNutrilogBinding binding;
     EditText etCal, etPro, etFat, etCarb;
+    int cal, pro, fat, carb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,14 +41,30 @@ public class FoodLogFragment extends Fragment {
         etFat = binding.ETFat;
         etCarb = binding.ETCarb;
 
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        User user = new User(mAuth);
+        Date date = new Date();
+        sDate dateString = new sDate(date);
+        DayStats currDay = new DayStats(db, dateString, mAuth.getCurrentUser());
+
+
         //click listener
         Button btSub = binding.btSubmitNutri;
         btSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //check if day is in database
-                //if yes pull data and add new data
-                //if not create new day and push to database
+                cal = Integer.parseInt(etCal.getText().toString());
+                pro = Integer.parseInt(etPro.getText().toString());
+                fat = Integer.parseInt(etFat.getText().toString());
+                carb = Integer.parseInt(etCarb.getText().toString());
+
+                currDay.addNutrient("cal", cal);
+                currDay.addNutrient("protein", pro);
+                currDay.addNutrient("fat", fat);
+                currDay.addNutrient("carb", carb);
+
+                currDay.pushToDatabase();
                 //navigate back to dashboard
                 navController.navigate(R.id.action_nav_food_log_to_nav_dash);
             }

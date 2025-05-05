@@ -2,6 +2,8 @@ package com.example.health_pal;
 
 import static java.lang.Double.parseDouble;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,9 +27,9 @@ public class DayStats {
        private int cal, protein, carb, fat;
        private double weight;
        private String height;
-       private Date date;
+       private sDate date;
     //constructor
-    public DayStats(FirebaseFirestore inputDB, Date inputDate, FirebaseUser inputUser){
+    public DayStats(FirebaseFirestore inputDB, sDate inputDate, FirebaseUser inputUser){
         db = inputDB;
         date = inputDate;
         user = inputUser;
@@ -38,7 +40,7 @@ public class DayStats {
         db.collection("users")
                 .document(user.getUid()) // Use getUid() for user document
                 .collection("days")
-                .document(date.toString()) // Assuming date.toString() provides a unique document ID
+                .document(date.getDate()) // Assuming date.toString() provides a unique document ID
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -68,29 +70,27 @@ public class DayStats {
     }
     //methods
     public void pushToDatabase(){
-        // Create a Map to hold the data
+        // map to hold the data
         Map<String, Object> dayData = new HashMap<>();
         dayData.put("cal", cal);
         dayData.put("protein", protein);
         dayData.put("carb", carb);
         dayData.put("fat", fat);
-        dayData.put("height", height);
-        dayData.put("weight", weight);
-        // You don't need to store the date field explicitly in the document
-        // if the document ID is the date string.
+        if(height == null){ DayStats prevDay = getPreviousDay(date); height = prevDay.getHeight(); }
+        else{dayData.put("height", height);}
+        if(weight == 0){ DayStats prevDay = getPreviousDay(date); weight = prevDay.getWeight(); }
+        else{ dayData.put("weight", weight); }
 
         db.collection("users")
-                .document(user.getUid()) // Use getUid() for user document
+                .document(user.getUid())
                 .collection("days")
-                .document(date.toString()) // Assuming date.toString() provides a unique document ID
-                .set(dayData) // Use set() to create or overwrite the document
+                .document(date.getDate())
+                .set(dayData)
                 .addOnSuccessListener(aVoid -> {
-                    // Document successfully written
-                    // You might want to add a success log or callback
+                    Log.w("DayStats", "Success writing document");
                 })
                 .addOnFailureListener(e -> {
-                    // Handle potential errors when writing the document
-                    // Log.w("DayStats", "Error writing document", e);
+                    Log.w("DayStats", "Error writing document", e);
                 });
     }
     public void pullFromDatabase(DocumentSnapshot doc){
@@ -124,8 +124,11 @@ public class DayStats {
                 break;
         }
     }
-    public void updateStats(){
-
+    public void updateWeight(double newWeight){
+        weight = newWeight;
+    }
+    public void updateHeight(String newHeight){
+        height = newHeight;
     }
     private void initializeNewDay() {
         // Set initial values for a new day
@@ -134,17 +137,31 @@ public class DayStats {
         carb = 0;
         fat = 0;
         //look for height and weight in user profile
-        DayStats prevDay = getPreviousDay();
+        DayStats prevDay = getPreviousDay(date);
         height = prevDay.getHeight();
         weight = prevDay.getWeight();
     }
-    public DayStats getPreviousDay() {
+    public DayStats getPreviousDay(sDate currDate) {
         //get previous day
-        Date prevDate;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_WEEK, -1);
-        prevDate = calendar.getTime();
+        sDate prevDate = currDate;
+        String dateString = prevDate.getDate();
+        String dateStringDay = dateString.substring(8);
+        int day = Integer.parseInt(dateStringDay);
+        if(day == 1){
+            String dateStringMonth = dateString.substring(5, 7);
+            int month = Integer.parseInt(dateStringMonth);
+            if(month == 1) {
+                String dateStringYear = dateString.substring(0, 3);
+                int year = Integer.parseInt(dateStringYear);
+                year--;
+                month = 12;
+                day = 31;
+                prevDate = new sDate(new Date(year, month, day));
+            }
+            else{ month--; }
+
+        }
+        else{ day--; }
 
         DayStats returnDay = new DayStats(db, prevDate, user);
         return returnDay;
@@ -156,5 +173,5 @@ public class DayStats {
     public int getFat(){ return fat; }
     public double getWeight(){ return weight; }
     public String getHeight(){ return height; }
-    public Date getDate(){ return date; }
+    public sDate getDate(){ return date; }
 }

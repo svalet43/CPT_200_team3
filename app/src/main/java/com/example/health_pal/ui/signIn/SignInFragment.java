@@ -1,7 +1,5 @@
 package com.example.health_pal.ui.signIn;
 
-import static com.example.health_pal.User.updateUser;
-
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -82,7 +80,6 @@ public class SignInFragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     user = new User(mAuth);
-                                    updateUser(user);
                                     // change fragment
                                     navController.navigate(R.id.action_nav_signIn_to_nav_dash);
                                 } else {
@@ -128,13 +125,11 @@ public class SignInFragment extends Fragment {
                                             if (task.isSuccessful()) {
                                                 // Sign in success, update UI with the signed-in user's information
                                                 user = new User(mAuth);
-                                                updateUser(user);
                                                 //change fragment
                                                 navController.navigate(R.id.action_nav_signIn_to_nav_dash);
                                             } else {
                                                 // If sign in fails, display a message to the user.
                                                 Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show();
-                                                updateUser(null);
                                             }
                                         }
                                     });
