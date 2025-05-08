@@ -3,6 +3,6 @@ package com.example.health_pal;
 public class BuildConfig {
     //REMEMBER TO REMOVE PERSONAL KEYS BEFORE PUSHING
     //my personal api key was removed for obvious reasons. To use the api, get your own at https://ai.google.dev/gemini-api/docs/api-key
-    public static String apiKey = "[PUT API KEY HERE]";
+    public static String apiKey = "AIzaSyDA8xzXqOGGqwB8a8UqIy3TrXgsWSAK_QA";
 }
 

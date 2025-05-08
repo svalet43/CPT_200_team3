@@ -43,10 +43,8 @@ public class FoodLogFragment extends Fragment {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        User user = new User(mAuth);
-        Date date = new Date();
-        sDate dateString = new sDate(date);
-        DayStats currDay = new DayStats(db, dateString, mAuth.getCurrentUser());
+        sDate date = new sDate(new Date());
+        DayStats currDay = new DayStats(db, date, mAuth.getCurrentUser());
 
 
         //click listener
@@ -64,7 +62,7 @@ public class FoodLogFragment extends Fragment {
                 currDay.addNutrient("fat", fat);
                 currDay.addNutrient("carb", carb);
 
-                currDay.pushToDatabase();
+                currDay.pushToNutriDatabase();
                 //navigate back to dashboard
                 navController.navigate(R.id.action_nav_food_log_to_nav_dash);
             }

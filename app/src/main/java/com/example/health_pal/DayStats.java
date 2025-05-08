@@ -38,7 +38,7 @@ public class DayStats {
     private void DayStatsConstructorHelper(){
         //if date is not already in database then create new row, otherwise pull date data
         db.collection("users")
-                .document(user.getUid()) // Use getUid() for user document
+                .document(user.getUid()) //
                 .collection("days")
                 .document(date.getDate())
                 .get()
@@ -52,28 +52,22 @@ public class DayStats {
                             }
                             else {
                                 initializeNewDay();
-                                pushToDatabase();
                             }
                         }
                         else {
                             initializeNewDay();
-                            pushToDatabase();
                         }
                     }
                 });
     }
     //methods
-    public void pushToDatabase(){
+    public void pushToNutriDatabase(){
         // map to hold the data
         Map<String, Object> dayData = new HashMap<>();
         dayData.put("cal", cal);
         dayData.put("protein", protein);
         dayData.put("carb", carb);
         dayData.put("fat", fat);
-        if(height == null){ DayStats prevDay = getPreviousDay(date); height = prevDay.getHeight(); }
-        else{dayData.put("height", height);}
-        if(weight == 0){ DayStats prevDay = getPreviousDay(date); weight = prevDay.getWeight(); }
-        else{ dayData.put("weight", weight); }
 
         db.collection("users")
                 .document(user.getUid())
@@ -86,6 +80,48 @@ public class DayStats {
                 .addOnFailureListener(e -> {
                     Log.w("DayStats", "Error writing document", e);
                 });
+    }
+    public void pushHWDatabase(){
+        // map to hold the data
+        Map<String, Object> dayData = new HashMap<>();
+        if(height == null){
+            DayStats prevDay = getPreviousDay(date);
+            height = prevDay.getHeight();
+        }
+        else{ dayData.put("height", height); }
+        if(weight == 0){
+            DayStats prevDay = getPreviousDay(date);
+            weight = prevDay.getWeight();
+        }
+        else{ dayData.put("weight", weight); }
+        db.collection("users")
+                .document(user.getUid())
+                .collection("stats")
+                .document(date.getDate())
+                .set(dayData)
+                .addOnSuccessListener(aVoid -> {
+                    Log.w("DayStats", "Success writing document");
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("DayStats", "Error writing document", e);
+                });
+    }
+    public DocumentSnapshot getDoc(){
+        final DocumentSnapshot[] document = {null};
+        db.collection("users")
+                .document(user.getUid()) //
+                .collection("days")
+                .document(date.getDate())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            document[0] = task.getResult();
+                        }
+                    }
+                });
+        return document[0];
     }
     public void pullFromDatabase(DocumentSnapshot doc){
         // Retrieve the data from the DocumentSnapshot
@@ -109,19 +145,15 @@ public class DayStats {
         switch (nutrient){
             case "carb":
                 carb += amount;
-                pushToDatabase();
                 break;
             case "protein":
                 protein += amount;
-                pushToDatabase();
                 break;
             case "fat":
                 fat += amount;
-                pushToDatabase();
                 break;
             case "cal":
                 cal += amount;
-                pushToDatabase();
                 break;
             default:
                 break;
@@ -140,32 +172,42 @@ public class DayStats {
         carb = 0;
         fat = 0;
         //look for height and weight in user profile
-        DayStats prevDay = getPreviousDay(date);
-        height = prevDay.getHeight();
-        weight = prevDay.getWeight();
+        try {
+            DayStats prevDay = getPreviousDay(date);
+            height = prevDay.getHeight();
+            weight = prevDay.getWeight();
+        }catch(Exception e){
+            height = null;
+            weight = 0;
+        }
     }
     public DayStats getPreviousDay(sDate currDate) {
         //get previous day
         sDate prevDate = currDate;
         String dateString = prevDate.getDate();
-        String dateStringDay = dateString.substring(8);
+
+        String dateStringMonth = dateString.substring(0, 2);
+        String dateStringDay = dateString.substring(3,5);
+        String dateStringYear = dateString.substring(6);
+        int month = Integer.parseInt(dateStringMonth);
         int day = Integer.parseInt(dateStringDay);
-        if(day == 1){
-            String dateStringMonth = dateString.substring(5, 7);
-            int month = Integer.parseInt(dateStringMonth);
-            if(month == 1) {
-                String dateStringYear = dateString.substring(0, 3);
-                int year = Integer.parseInt(dateStringYear);
-                year--;
+        int year = Integer.parseInt(dateStringYear);
+
+        if(day == 1){ //if first day
+            if(month != 1) { //if not first month
+                month--;
+                if (month == 2) { day = 28; }
+                else if (month == 4 || month == 6 || month == 9 || month == 11) { day = 30; }
+                else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) { day = 31; }
+            }
+            else{ //if first month
                 month = 12;
                 day = 31;
-                prevDate = new sDate(new Date(year, month, day));
-            }
-            else{ month--; }
-
+                year--;}
         }
-        else{ day--; }
+        else{ day--; } //if first day
 
+        prevDate = new sDate(month, day, year);
         DayStats returnDay = new DayStats(db, prevDate, user);
         return returnDay;
     }

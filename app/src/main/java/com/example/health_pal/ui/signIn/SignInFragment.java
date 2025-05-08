@@ -11,14 +11,12 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.health_pal.R;
 import com.example.health_pal.User;
 import com.example.health_pal.databinding.FragmentSigninBinding;
-import com.example.health_pal.ui.Dashboard.DashboardViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -31,6 +29,7 @@ import java.util.regex.Pattern;
 
 public class SignInFragment extends Fragment {
     public static User user;
+    public static boolean signedInThisSession = false;
     private FragmentSigninBinding binding;
     private FirebaseAuth mAuth;
     private String email, password, password2,
@@ -43,10 +42,6 @@ public class SignInFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
-        //view model object
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
 
         //inflate binding and get root
         binding = FragmentSigninBinding.inflate(inflater, container, false);
@@ -80,6 +75,7 @@ public class SignInFragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     user = new User(mAuth);
+                                    signedInThisSession = true;
                                     // change fragment
                                     navController.navigate(R.id.action_nav_signIn_to_nav_dash);
                                 } else {
@@ -122,11 +118,11 @@ public class SignInFragment extends Fragment {
                                     .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if (task.isSuccessful()) {
-                                                // Sign in success, update UI with the signed-in user's information
+                                            if (task.isSuccessful()) { //if successful
                                                 user = new User(mAuth);
+                                                signedInThisSession = true;
                                                 //change fragment
-                                                navController.navigate(R.id.action_nav_signIn_to_nav_dash);
+                                                navController.navigate(R.id.action_nav_signIn_to_nav_stat_log);
                                             } else {
                                                 // If sign in fails, display a message to the user.
                                                 Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show();

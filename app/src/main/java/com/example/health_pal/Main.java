@@ -57,34 +57,6 @@ public class Main extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
         // Initialize Auth Manager
         authManager = new AuthManager();
-
-        final ActivityResultLauncher<Intent> settingsLauncher =
-                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                        result -> {
-                            // Check if the user signed out
-                            if (authManager.isLoggedIn()) {
-                                navController.navigate(R.id.nav_signIn);
-                            }
-                        });
-
-        //check if logged in
-        if(!authManager.isLoggedIn() && Settings.signedOut){
-            navController.navigate(R.id.nav_signIn);
-            // Set up button to go to settings
-            Intent intent = new Intent(this, Settings.class);
-            settingsLauncher.launch(intent);
-        }
-
-
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("MainActivity", "onResume called");
-        //Check if logged in
-        if (!authManager.isLoggedIn()) {
-            navController.navigate(R.id.nav_signIn);
-        }
     }
 
     // handle the options menu (3 dots) at top right of main pages

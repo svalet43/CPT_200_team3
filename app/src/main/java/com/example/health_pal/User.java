@@ -17,15 +17,19 @@ public class User {
         if(AuthManager.isLoggedIn()) { //check
             mAuth = m_Auth;
             currentUser = mAuth.getCurrentUser();
-            email = currentUser.getEmail();
+            if (currentUser != null) {
+                email = currentUser.getEmail();
 
-            if(email != null){
-                int amperIndex = 0;
-                for(int i=0; i<email.length();i++){
-                    if(email.charAt(i) == '@'){ amperIndex = i; }
+                if (email != null) {
+                    int amperIndex = 0;
+                    for (int i = 0; i < email.length(); i++) {
+                        if (email.charAt(i) == '@') {
+                            amperIndex = i;
+                        }
+                    }
+                    username = email.substring(0, amperIndex);
+                    ID = currentUser.getUid();
                 }
-                username = email.substring(0, amperIndex);
-                ID = currentUser.getUid();
             }
         }
     }

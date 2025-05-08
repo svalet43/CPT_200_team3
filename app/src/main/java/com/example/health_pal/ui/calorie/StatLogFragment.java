@@ -3,6 +3,7 @@ package com.example.health_pal.ui.calorie;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -18,6 +19,7 @@ import com.example.health_pal.User;
 import com.example.health_pal.databinding.FragNutrilogBinding;
 import com.example.health_pal.databinding.FragStatLogBinding;
 import com.example.health_pal.sDate;
+import com.example.health_pal.ui.Dashboard.DashboardViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -60,7 +62,8 @@ public class StatLogFragment extends Fragment {
                 weight = Double.parseDouble(etWeight.getText().toString());
                 if(weight != 0){ currDay.updateWeight(weight); }
 
-                currDay.pushToDatabase();
+                currDay.pushHWDatabase();
+
                 //navigate back to dashboard
                 navController.navigate(R.id.action_nav_stat_log_to_nav_dash);
             }
