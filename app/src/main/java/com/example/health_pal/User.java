@@ -9,7 +9,7 @@ public class User {
     * email = users email pulled from firebase
     * username = generated from email*/
     //variables
-    private String email, username = "", ID = "";
+    private String email, username = "";
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     //constructor
@@ -19,7 +19,6 @@ public class User {
             currentUser = mAuth.getCurrentUser();
             if (currentUser != null) {
                 email = currentUser.getEmail();
-
                 if (email != null) {
                     int amperIndex = 0;
                     for (int i = 0; i < email.length(); i++) {
@@ -28,13 +27,23 @@ public class User {
                         }
                     }
                     username = email.substring(0, amperIndex);
-                    ID = currentUser.getUid();
                 }
             }
         }
     }
+    public User(FirebaseUser user) {
+        email = user.getEmail();
+        if (email != null) {
+            int amperIndex = 0;
+            for (int i = 0; i < email.length(); i++) {
+                if (email.charAt(i) == '@') {
+                    amperIndex = i;
+                }
+            }
+            username = email.substring(0, amperIndex);
+        }
+    }
     //getters
-    public String getEmail(){ return email; }
     public String getUsername(){ return username; }
     //methods
 }

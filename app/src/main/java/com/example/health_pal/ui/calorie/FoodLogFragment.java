@@ -18,6 +18,7 @@ import com.example.health_pal.User;
 import com.example.health_pal.databinding.FragLogIntroBinding;
 import com.example.health_pal.databinding.FragNutrilogBinding;
 import com.example.health_pal.sDate;
+import com.example.health_pal.ui.Dashboard.DashboardViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -41,10 +42,7 @@ public class FoodLogFragment extends Fragment {
         etFat = binding.ETFat;
         etCarb = binding.ETCarb;
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        sDate date = new sDate(new Date());
-        DayStats currDay = new DayStats(db, date, mAuth.getCurrentUser());
+        DayStats currDay = DashboardViewModel.currDay;
 
 
         //click listener

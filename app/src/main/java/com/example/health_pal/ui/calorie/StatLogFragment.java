@@ -30,6 +30,7 @@ public class StatLogFragment extends Fragment {
     EditText etFt, etIn, etWeight;
     String ft, in, fullHeight;
     double weight;
+    public static DayStats currDay;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,10 +46,10 @@ public class StatLogFragment extends Fragment {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        User user = new User(mAuth);
+
         Date date = new Date();
         sDate dateString = new sDate(date);
-        DayStats currDay = new DayStats(db, dateString, mAuth.getCurrentUser());
+        currDay = new DayStats(db, dateString, mAuth.getCurrentUser());
 
         Button btSub = binding.btSubmitStat;
         btSub.setOnClickListener(new View.OnClickListener() {

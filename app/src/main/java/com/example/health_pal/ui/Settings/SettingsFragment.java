@@ -40,20 +40,9 @@ public class SettingsFragment extends Fragment {
         SettingsViewModel settingsViewModel =
                 new ViewModelProvider(this).get(SettingsViewModel.class);
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        SwitchCompat dark_switch;
 
-        dark_switch = view.findViewById(R.id.switch1);
         Toast.makeText(getContext(), "Fragment loaded", Toast.LENGTH_SHORT).show();
 
-        dark_switch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Toast.makeText(getContext(), "TEST NX ON", Toast.LENGTH_SHORT).show();
-                Log.d("TEST", savedInstanceState.toString());
-            }
-            else {
-                Toast.makeText(getContext(), "TEST NX OFF", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         //View view = binding.getRoot();

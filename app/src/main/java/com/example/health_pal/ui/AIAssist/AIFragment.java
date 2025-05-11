@@ -1,6 +1,7 @@
 package com.example.health_pal.ui.AIAssist;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,22 @@ import androidx.lifecycle.ViewModelProvider;
 
 //import com.google.ai.client.generativeai.type.GenerateContentRequest;
 
+import com.example.health_pal.DayStats;
 import com.example.health_pal.R;
 import com.example.health_pal.databinding.FragmentAiBinding;
+import com.example.health_pal.sDate;
+import com.example.health_pal.ui.Dashboard.DashboardViewModel;
+import com.example.health_pal.ui.calorie.StatLogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
 
 
 public class AIFragment extends Fragment {
     private FragmentAiBinding binding;
+    public DayStats currDay;
+    String inputQual;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +45,21 @@ public class AIFragment extends Fragment {
 
         binding = FragmentAiBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        currDay = new DayStats(FirebaseFirestore.getInstance(), new sDate(new Date()), FirebaseAuth.getInstance().getCurrentUser());
+        currDay.loadAllDataFromDatabase(new DayStats.DayStatsLoadCallback() {
+                                            @Override
+                                            public void onDataLoaded(DayStats loadedDayStats) {
+                                                inputQual = "[current nutrients for today and user's height and weight](" + currDay.getCal() +
+                                                        " cal, " + currDay.getProtein() +
+                                                        "g protein, " + currDay.getCarb() + "g carbs, " + currDay.getFat() +
+                                                        "g fat," + currDay.getHeight() + ", " + currDay.getWeight() + "lbs)";
+                                            }
+                                            @Override
+                                            public void onError(Exception e) {}});
+
+        TextView textView = binding.textView3;
+        textView.setMovementMethod(new ScrollingMovementMethod());
 
         return root;
     }
@@ -54,10 +80,9 @@ public class AIFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String in_text = ai_in.getText().toString().trim();
-
                 if (!in_text.isEmpty()) {
                     ai_out.setText("Awating Response...");
-                    askGemini(in_text, ai_out);
+                    askGemini(in_text + inputQual, ai_out);
                 }
                 else {
                     Toast.makeText(getContext(), "Input cannot be Empty", Toast.LENGTH_SHORT).show();

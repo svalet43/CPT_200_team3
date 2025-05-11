@@ -59,6 +59,8 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="276dp"
         android:text=" "
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

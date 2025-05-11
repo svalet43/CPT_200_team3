@@ -32,11 +32,12 @@ public class SignInFragment extends Fragment {
     public static boolean signedInThisSession = false;
     private FragmentSigninBinding binding;
     private FirebaseAuth mAuth;
-    private String email, password, password2,
+    private String password, password2,
             passwordReq = "Password must be at least 8 characters long and contain the following: " +
                     "\n- One digit (0-9)\n- One Special character(!@#$%^&*?_=+)\n- One lowercase letter " +
                     "(a-z)\n- One uppercase letter(A-Z)";
     private static final String TAG = "SignInFragment";
+    public static String email;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -73,15 +74,17 @@ public class SignInFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    user = new User(mAuth);
-                                    signedInThisSession = true;
-                                    // change fragment
-                                    navController.navigate(R.id.action_nav_signIn_to_nav_dash);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show();
+                                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                                    if (firebaseUser != null) {
+                                        user = new User(firebaseUser);
+                                        signedInThisSession = true;
+                                        navController.navigate(R.id.action_nav_signIn_to_nav_dash);
+                                    }
+                                    else {
+                                        Snackbar.make(view, "Authentication successful but user data not available.", Snackbar.LENGTH_LONG).show();
+                                    }
                                 }
+                                else { Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show(); }
                             }
                         });
 
@@ -119,12 +122,18 @@ public class SignInFragment extends Fragment {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) { //if successful
-                                                user = new User(mAuth);
-                                                signedInThisSession = true;
-                                                //change fragment
-                                                navController.navigate(R.id.action_nav_signIn_to_nav_stat_log);
-                                            } else {
-                                                // If sign in fails, display a message to the user.
+                                                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                                                if (firebaseUser != null) {
+                                                    user = new User(firebaseUser);
+                                                    signedInThisSession = true;
+                                                    // Now navigate
+                                                    navController.navigate(R.id.action_nav_signIn_to_nav_stat_log);
+                                                }
+                                                else {
+                                                    Snackbar.make(view, "Authentication successful but user data not available.", Snackbar.LENGTH_LONG).show();
+                                                }
+                                            }
+                                            else {
                                                 Snackbar.make(view, "Authentication Failed", Snackbar.LENGTH_LONG).show();
                                             }
                                         }

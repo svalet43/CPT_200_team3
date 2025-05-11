@@ -1,6 +1,8 @@
 package com.example.health_pal.ui.Dashboard;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,25 +17,23 @@ import androidx.navigation.Navigation;
 import com.example.health_pal.R;
 import com.example.health_pal.Settings;
 import com.example.health_pal.databinding.FragmentDashBinding;
-import com.google.firebase.auth.FirebaseAuth;
-
 
 public class DashboardFragment extends Fragment {
 
     private FragmentDashBinding binding;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Handler refreshHandler;
+    private Runnable refreshRunnable;
+    private static final int refresh = 10000;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //view model object
+
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
-
         //inflate binding and get root
         binding = FragmentDashBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
 
 
         //view objects
@@ -43,7 +43,7 @@ public class DashboardFragment extends Fragment {
 
         //set text size
         tvWelcome.setTextSize(30);
-        tvWelcomeMessage.setTextSize(30);
+        tvWelcomeMessage.setTextSize(20);
         tvCalorieCount.setTextSize(30);
         tvCarbCount.setTextSize(30);
         tvProCount.setTextSize(30);
@@ -58,7 +58,15 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel.getTextCarbCount().observe(getViewLifecycleOwner(), tvCarbCount::setText);
         dashboardViewModel.getTextFatCount().observe(getViewLifecycleOwner(), tvFatCount::setText);
 
-
+        //init refresh
+        refreshHandler = new Handler(Looper.getMainLooper());
+        refreshRunnable = new Runnable() {
+            @Override
+            public void run() {
+                dashboardViewModel.refresh();
+                refreshHandler.postDelayed(this, refresh);
+            }
+        };
 
         return root;
     }
@@ -70,16 +78,25 @@ public class DashboardFragment extends Fragment {
             navController.navigate(R.id.action_nav_dash_to_nav_signIn);
         }
         // update user data
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        refreshHandler.postDelayed(refreshRunnable, refresh);
 
-        dashboardViewModel.refresh();
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        refreshHandler.postDelayed(refreshRunnable, refresh);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        refreshHandler.removeCallbacks(refreshRunnable);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        refreshHandler.removeCallbacks(refreshRunnable);
         binding = null;
     }
 }
