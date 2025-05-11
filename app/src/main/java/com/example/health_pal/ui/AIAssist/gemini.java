@@ -44,8 +44,8 @@ public class gemini {
                 BlockThreshold.ONLY_HIGH);
 
         GenerationConfig.Builder configBuilder = new GenerationConfig.Builder();
-        configBuilder.temperature = 0.9f;
-        configBuilder.topK = 16;
+        configBuilder.temperature = 1f;
+        configBuilder.topK = 17;
         configBuilder.topP = 0.1f;
         GenerationConfig generationConfig = configBuilder.build();
 

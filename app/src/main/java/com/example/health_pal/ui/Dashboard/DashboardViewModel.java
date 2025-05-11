@@ -69,8 +69,6 @@ public class DashboardViewModel extends ViewModel {
                 carbCount = currDay.getCarb();
                 fatCount = currDay.getFat();
 
-                generateWelcomeMessage();
-
                 tvWelcome.setValue("Hello " + userName);
 
                 tvCalorieCount.setValue(String.valueOf(calCount));
@@ -83,6 +81,7 @@ public class DashboardViewModel extends ViewModel {
                 Log.e("DashboardViewModel", "Error loading data", e);
             }
         });
+        generateWelcomeMessage();
 
     }
 
@@ -126,9 +125,7 @@ public class DashboardViewModel extends ViewModel {
                                     tvCarbCount.setValue(String.valueOf(carb));
                                     tvFatCount.setValue(String.valueOf(fat));
                                 } catch (Exception e) {
-                                    // Handle potential errors in casting or reading data
                                     Log.e("DashboardViewModel", "Error parsing data from Firestore", e);
-                                    // Optionally set LiveData to indicate an error or default values
                                     tvCalorieCount.setValue("Error");
                                     tvProCount.setValue("Error");
                                     tvCarbCount.setValue("Error");
